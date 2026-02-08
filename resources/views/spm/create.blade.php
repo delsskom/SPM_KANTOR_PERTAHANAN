@@ -223,17 +223,36 @@
 
             <br>
 
-            <label>Kategori</label>
-            <select name="kategori_id">
-                <option value="">-- Pilih Kategori --</option>
-                @foreach($kategoris as $k)
-                    <option value="{{ $k->id }}" {{ old('kategori_id') == $k->id ? 'selected' : '' }}>
-                        {{ $k->nama_kategori }}
-                    </option>
-                @endforeach
-            </select>
-            @error('kategori_id') <small style="color:#ff7675">{{ $message }}</small> @enderror
+      @php
+$kategoriList = [
+    'Honorarium',
+    'Gaji',
+    'Tunjangan Kinerja',
+    'Belanja Barang',
+    'Belanja Modal',
+    'Perjalanan Dinas',
+    'Tagihan Listrik',
+    'Tagihan Telepon',
+    'Internet',
+    'Uang Makan',
+    'Uang Lembur',
+    'Penggantian Uang Persediaan',
+    'Tagihan Internet',
+    'Kekurangan Gaji',
+    'PPN/PPH',
+    'Honorarium Khusus'
+];
+@endphp
 
+<label>Kategori</label>
+<select name="kategori_id">
+    <option value="">-- Pilih Kategori --</option>
+    @foreach($kategoriList as $kat)
+        <option value="{{ $kat }}" {{ old('kategori_id')==$kat ? 'selected' : '' }}>
+            {{ $kat }}
+        </option>
+    @endforeach
+</select>
             <br>
 
             <label>Uraian</label>
