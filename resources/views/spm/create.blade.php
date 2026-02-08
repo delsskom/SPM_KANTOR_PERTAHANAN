@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Data SPM | Kantor Pertanahan Kota Kendari</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: white;
+            background-image: url('{{ asset("images/atr.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* overlay gelap */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: -1;
+        }
+
+        .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+}
+
+.navbar h3 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.navbar span {
+    color: #f9ca24;
+}
+
+/* MENU */
+.nav-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 4px;
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: #f9ca24;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: 100%;
+}
+
+.nav-menu a:hover {
+    color: #f9ca24;
+}
+
+
+        /* container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 40px;
+        }
+
+        /* form box */
+        .form-box {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(14px);
+            padding: 40px;
+            border-radius: 22px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        small {
+            display: block;
+            margin-top: 6px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #888f05;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #f9ca24;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h3>Sistem <span>SPM</span></h3>
+
+    <div class="nav-menu">
+        <a href="{{ url('/') }}">Beranda</a>
+        <a href="{{ route('tentang') }}">Tentang Sistem</a>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="form-box">
+
+        <h2>Input Data SPM</h2>
+
+        <form method="POST" action="{{ route('spm.store') }}">
+            @csrf
+
+            <label>Nomor SPM</label>
+            <input type="text" name="nomor_spm" value="{{ old('nomor_spm') }}">
+            @error('nomor_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <br>
+
+            <label>Tanggal SPM</label>
+            <input type="date" name="tanggal_spm" value="{{ old('tanggal_spm') }}">
+            @error('tanggal_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <br>
+
+            <label>Nilai SPM</label>
+            <input type="number" step="0.01" name="nilai_spm" value="{{ old('nilai_spm') }}">
+            @error('nilai_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <br>
+
+            <label>Kategori</label>
+            <select name="kategori_id">
+                <option value="">-- Pilih Kategori --</option>
+                @foreach($kategoris as $k)
+                    <option value="{{ $k->id }}" {{ old('kategori_id') == $k->id ? 'selected' : '' }}>
+                        {{ $k->nama_kategori }}
+                    </option>
+                @endforeach
+            </select>
+            @error('kategori_id') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <br>
+
+            <label>Uraian</label>
+            <textarea name="uraian">{{ old('uraian') }}</textarea>
+            @error('uraian') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <br>
+
+            <label>Tahun Anggaran</label>
+            <input type="number" name="tahun_anggaran" value="{{ old('tahun_anggaran', date('Y')) }}">
+            @error('tahun_anggaran') <small style="color:#ff7675">{{ $message }}</small> @enderror
+
+            <button type="submit">Simpan Data SPM</button>
+        </form>
+
+        </div>
+</div>
+
+</body>
+</html>
