@@ -254,6 +254,7 @@
                     <th>Nomor SPM</th>
                     <th>Tanggal</th>
                     <th>Nilai</th>
+                    <th>Kategori</th>
                     <th>Uraian</th>
                 </tr>
             </thead>
@@ -270,8 +271,8 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" style="text-align:center; padding:20px;">
-                        Data SPM belum tersedia
+                    <td colspan="8" style="text-align:center; padding:30px;">
+                            Data SPM belum tersedia
                     </td>
                 </tr>
                 @endforelse

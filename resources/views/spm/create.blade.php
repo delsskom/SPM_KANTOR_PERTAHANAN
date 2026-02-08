@@ -247,6 +247,8 @@
             @error('tahun_anggaran') <small style="color:#ff7675">{{ $message }}</small> @enderror
 
             <button type="submit">Simpan Data SPM</button>
+         <button type="button" class="btn-back" onclick="window.location.href='{{ url('/') }}'">Kembali ke Beranda</button>
+
         </form>
 
         </div>
