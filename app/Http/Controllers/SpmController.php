@@ -20,39 +20,41 @@ class SpmController extends Controller
      * Tampilkan data SPM
      */
     public function index(Request $request)
-    {
-        $spms = Spm::query()
-    ->when(request('cari'), function($query) {
-        $cari = request('cari');
+{
+    $spms = Spm::with('kategori')
+        ->when($request->cari, function ($query) use ($request) {
+            $cari = $request->cari;
 
-        // Split jika pengguna pakai tanda / atau spasi
-        $parts = array_map('trim', explode('/', $cari));
+            // Biar bisa input: 001/UP/2024 atau pakai spasi
+            $parts = preg_split('/[\/\s]+/', $cari);
 
-        foreach ($parts as $part) {
-            $query->where(function($q) use ($part) {
-                $q->where('nomor_spm', 'like', "%{$part}%")
-                  ->orWhereHas('kategori', function($q2) use ($part) {
-                      $q2->where('nama_kategori', 'like', "%{$part}%");
-                  })
-                  ->orWhere('tahun_anggaran', 'like', "%{$part}%");
-            });
-        }
-    })
-    ->orderBy('tanggal_spm', 'desc')
-    ->get();
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if ($part === '') continue;
 
+                $query->where(function ($q) use ($part) {
+                    $q->where('nomor_spm', 'like', "%{$part}%")
+                      ->orWhereHas('kategori', function ($q2) use ($part) {
+                          $q2->where('nama_kategori', 'like', "%{$part}%");
+                      })
+                      ->orWhere('tahun_anggaran', 'like', "%{$part}%");
+                });
+            }
+        })
+        ->when($request->kategori, function ($query) use ($request) {
+            $query->where('kategori_id', $request->kategori);
+        })
+        ->when($request->tahun, function ($query) use ($request) {
+            $query->where('tahun_anggaran', $request->tahun);
+        })
+        ->orderBy('tanggal_spm', 'desc')
+        ->get();
 
-        return view('spm.index', compact('spms'));
-    }
+    $kategoris = Kategori::all();
 
-    /**
-     * Form tambah SPM
-     */
-    public function create()
-    {
-        $kategoris = Kategori::all();
-        return view('spm.create', compact('kategoris'));
-    }
+    return view('spm.index', compact('spms', 'kategoris'));
+}
+
 
     /**
      * Simpan data SPM

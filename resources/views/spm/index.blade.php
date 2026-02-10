@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Data SPM | Kantor Pertanahan Kota Kendari</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
+
     <!-- ICON -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -101,14 +102,24 @@
             margin-bottom: 25px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .search-box input {
             flex: 1;
+            min-width: 220px;
             padding: 12px 16px;
             border-radius: 12px;
             border: none;
             outline: none;
+        }
+
+        .search-box select {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            min-width: 180px;
         }
 
         .search-box button {
@@ -226,12 +237,37 @@
         </div>
     @endif
 
-   <form class="search-box" method="GET">
-    <input type="text" name="cari" placeholder="Cari Nomor SPM / Kategori / Tahun..."
-           value="{{ request('cari') }}">
-    <button type="submit">Cari</button>
-</form>
+    <!-- 🔥 FORM SEARCH + FILTER -->
+    <form method="GET" action="{{ route('spm.index') }}" class="search-box">
 
+        <input type="text" name="cari"
+               placeholder="Cari Nomor SPM / Kategori / Tahun..."
+               value="{{ request('cari') }}">
+
+        <!-- FILTER KATEGORI -->
+        <select name="kategori">
+            <option value="">-- Semua Kategori --</option>
+            @foreach ($kategoris as $kat)
+                <option value="{{ $kat->id }}" {{ request('kategori') == $kat->id ? 'selected' : '' }}>
+                    {{ $kat->nama_kategori }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- FILTER TAHUN -->
+        <select name="tahun">
+            <option value="">-- Semua Tahun --</option>
+            @for ($t = date('Y'); $t >= 2015; $t--)
+                <option value="{{ $t }}" {{ request('tahun') == $t ? 'selected' : '' }}>
+                    {{ $t }}
+                </option>
+            @endfor
+        </select>
+
+        <button type="submit">Cari</button>
+    </form>
+
+    <!-- TABEL DATA -->
     <div class="table-wrapper">
         <table>
             <thead>
