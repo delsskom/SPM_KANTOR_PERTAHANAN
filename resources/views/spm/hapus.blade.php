@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hapus Data SPM | Kantor Pertanahan Kota Kendari</title>
-
+    <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
     <!-- ICON -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
