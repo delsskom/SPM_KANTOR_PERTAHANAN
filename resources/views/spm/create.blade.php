@@ -46,7 +46,6 @@
         .navbar h3 {
             margin: 0;
             font-size: 18px;
-            letter-spacing: 1px;
         }
 
         .navbar span {
@@ -63,24 +62,6 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            padding-bottom: 4px;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        .nav-menu a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0%;
-            height: 2px;
-            background: #f9ca24;
-            transition: 0.3s;
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
         }
 
         .container {
@@ -102,8 +83,9 @@
         }
 
         label {
+            display: block;
+            margin-top: 15px;
             font-size: 14px;
-            opacity: 0.9;
         }
 
         input, select, textarea {
@@ -111,7 +93,6 @@
             padding: 12px 14px;
             border-radius: 12px;
             border: none;
-            outline: none;
             margin-top: 6px;
             font-size: 14px;
         }
@@ -123,6 +104,7 @@
         small {
             display: block;
             margin-top: 6px;
+            color: #ff7675;
         }
 
         button {
@@ -136,6 +118,17 @@
             cursor: pointer;
             background: #888f05;
             color: white;
+        }
+
+        .btn-back {
+            background: #636e72;
+        }
+
+        .error-box {
+            background: #ff7675;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -154,44 +147,62 @@
 
         <h2>Input Data SPM</h2>
 
+        {{-- ERROR GLOBAL --}}
+        @if ($errors->any())
+            <div class="error-box">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('spm.store') }}">
             @csrf
 
             <label>Nomor SPM</label>
-            <input type="text" name="nomor_spm" value="{{ old('nomor_spm') }}">
-            @error('nomor_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            <input type="text" name="nomor_spm" value="{{ old('nomor_spm') }}" required>
+            @error('nomor_spm') <small>{{ $message }}</small> @enderror
 
             <label>Tanggal SPM</label>
-            <input type="date" name="tanggal_spm" value="{{ old('tanggal_spm') }}">
-            @error('tanggal_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            <input type="date" name="tanggal_spm" value="{{ old('tanggal_spm') }}" required>
+            @error('tanggal_spm') <small>{{ $message }}</small> @enderror
 
             <label>Nilai SPM</label>
-            <input type="number" step="0.01" name="nilai_spm" value="{{ old('nilai_spm') }}">
-            @error('nilai_spm') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            <input type="number" name="nilai_spm" min="0" value="{{ old('nilai_spm') }}" required>
+            @error('nilai_spm') <small>{{ $message }}</small> @enderror
 
-            <!-- 🔥 PERBAIKAN UTAMA DI SINI -->
             <label>Kategori</label>
-            <select name="kategori_id">
+            <select name="kategori_id" required>
                 <option value="">-- Pilih Kategori --</option>
-                @foreach($kategoris as $kat)
-                    <option value="{{ $kat->id }}" {{ old('kategori_id') == $kat->id ? 'selected' : '' }}>
+                @foreach ($kategoris as $kat)
+                    <option value="{{ $kat->id }}"
+                        {{ old('kategori_id') == $kat->id ? 'selected' : '' }}>
                         {{ $kat->nama_kategori }}
                     </option>
                 @endforeach
             </select>
-            @error('kategori_id') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            @error('kategori_id') <small>{{ $message }}</small> @enderror
 
             <label>Uraian</label>
-            <textarea name="uraian">{{ old('uraian') }}</textarea>
-            @error('uraian') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            <textarea name="uraian" required>{{ old('uraian') }}</textarea>
+            @error('uraian') <small>{{ $message }}</small> @enderror
 
             <label>Tahun Anggaran</label>
-            <input type="number" name="tahun_anggaran" value="{{ old('tahun_anggaran', date('Y')) }}">
-            @error('tahun_anggaran') <small style="color:#ff7675">{{ $message }}</small> @enderror
+            <input type="number" name="tahun_anggaran"
+                   value="{{ old('tahun_anggaran', date('Y')) }}"
+                   required>
+            @error('tahun_anggaran') <small>{{ $message }}</small> @enderror
 
-            <button type="submit">Simpan Data SPM</button>
-            <button type="button" onclick="window.location.href='{{ url('/') }}'">
-                Kembali ke Beranda
+            <button type="submit"
+                onclick="this.disabled=true; this.form.submit();">
+                Simpan Data SPM
+            </button>
+
+            <button type="button" class="btn-back"
+                onclick="window.location.href='{{ route('spm.index') }}'">
+                Kembali
             </button>
         </form>
 
