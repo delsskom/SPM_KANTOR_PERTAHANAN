@@ -226,11 +226,11 @@
         </div>
     @endif
 
-    <form class="search-box" method="GET">
-        <input type="text" name="cari" placeholder="Cari Nomor SPM..."
-               value="{{ request('cari') }}">
-        <button type="submit">Cari</button>
-    </form>
+   <form class="search-box" method="GET">
+    <input type="text" name="cari" placeholder="Cari Nomor SPM / Kategori / Tahun..."
+           value="{{ request('cari') }}">
+    <button type="submit">Cari</button>
+</form>
 
     <div class="table-wrapper">
         <table>

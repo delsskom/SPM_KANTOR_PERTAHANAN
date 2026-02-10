@@ -21,11 +21,26 @@ class SpmController extends Controller
      */
     public function index(Request $request)
     {
-        $spms = Spm::with('kategori')
-            ->when($request->cari, function ($q) use ($request) {
-                $q->where('nomor_spm', 'like', '%' . $request->cari . '%');
-            })
-            ->get();
+        $spms = Spm::query()
+    ->when(request('cari'), function($query) {
+        $cari = request('cari');
+
+        // Split jika pengguna pakai tanda / atau spasi
+        $parts = array_map('trim', explode('/', $cari));
+
+        foreach ($parts as $part) {
+            $query->where(function($q) use ($part) {
+                $q->where('nomor_spm', 'like', "%{$part}%")
+                  ->orWhereHas('kategori', function($q2) use ($part) {
+                      $q2->where('nama_kategori', 'like', "%{$part}%");
+                  })
+                  ->orWhere('tahun_anggaran', 'like', "%{$part}%");
+            });
+        }
+    })
+    ->orderBy('tanggal_spm', 'desc')
+    ->get();
+
 
         return view('spm.index', compact('spms'));
     }
