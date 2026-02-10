@@ -154,18 +154,24 @@
             color: #f9ca24;
         }
 
-        /* AKSI */
-        .aksi a {
+        .aksi a,
+        .aksi button {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             margin-right: 10px;
-            text-decoration: none;
             font-weight: bold;
+            font-size: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            padding: 0;
         }
 
         .aksi .edit {
             color: #00cec9;
+            text-decoration: none;
         }
 
         .aksi .hapus {
@@ -241,9 +247,16 @@
                         <a href="{{ route('spm.edit', $s->id) }}" class="edit">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a href="{{ route('spm.show', $s->id) }}" class="hapus">
-                            <i class="fa-solid fa-trash"></i> Hapus
-                        </a>
+
+                        <form action="{{ route('spm.destroy', $s->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    class="hapus"
+                                    onclick="return confirm('Yakin hapus data SPM ini?')">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @empty

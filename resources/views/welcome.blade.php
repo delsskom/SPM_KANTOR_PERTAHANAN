@@ -259,7 +259,7 @@
         <div class="features">
             <div class="feature-box">Pencarian Data SPM</div>
             <div class="feature-box">Kategori & Tahun Anggaran</div>
-            <div class="feature-box">Pengelolaan Arsip Digital</div>
+            <div class="feature-box">Arsip Digital</div>
         </div>
 
         <div class="hero-buttons">

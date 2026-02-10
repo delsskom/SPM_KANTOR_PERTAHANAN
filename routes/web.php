@@ -16,11 +16,19 @@ Route::view('/tentang', 'tentang')->name('tentang');
 
 /*
 |--------------------------------------------------------------------------
-| ROUTE SPM (CRUD LENGKAP)
+| ROUTE SPM (CRUD LENGKAP + TERLIHAT SEMUA)
 |--------------------------------------------------------------------------
 */
 
-Route::resource('spm', SpmController::class);
+Route::prefix('spm')->name('spm.')->group(function () {
 
-Route::resource('spm', SpmController::class)->except('show');
+    Route::get('/', [SpmController::class, 'index'])->name('index');
+    Route::get('/create', [SpmController::class, 'create'])->name('create');
+    Route::post('/', [SpmController::class, 'store'])->name('store');
 
+    Route::get('/{id}/edit', [SpmController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [SpmController::class, 'update'])->name('update');
+
+    Route::delete('/{id}', [SpmController::class, 'destroy'])->name('destroy');
+
+});

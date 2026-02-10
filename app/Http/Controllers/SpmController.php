@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class SpmController extends Controller
 {
+    /**
+     * Halaman Welcome / Home
+     */
+    public function welcome()
+    {
+        return view('welcome');
+    }
+
+    /**
+     * Tampilkan data SPM
+     */
     public function index(Request $request)
     {
         $spms = Spm::with('kategori')
@@ -19,12 +30,18 @@ class SpmController extends Controller
         return view('spm.index', compact('spms'));
     }
 
+    /**
+     * Form tambah SPM
+     */
     public function create()
     {
         $kategoris = Kategori::all();
         return view('spm.create', compact('kategoris'));
     }
 
+    /**
+     * Simpan data SPM
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -42,6 +59,9 @@ class SpmController extends Controller
             ->with('success', 'Data berhasil disimpan');
     }
 
+    /**
+     * Form edit SPM
+     */
     public function edit($id)
     {
         $spm = Spm::findOrFail($id);
@@ -50,6 +70,9 @@ class SpmController extends Controller
         return view('spm.edit', compact('spm', 'kategoris'));
     }
 
+    /**
+     * Update data SPM
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -68,6 +91,9 @@ class SpmController extends Controller
             ->with('success', 'Data berhasil diupdate');
     }
 
+    /**
+     * Hapus data SPM
+     */
     public function destroy($id)
     {
         Spm::findOrFail($id)->delete();
