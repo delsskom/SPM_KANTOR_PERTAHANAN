@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class SpmController extends Controller
 {
-    // 👉 halaman welcome (BENAR)
     public function welcome()
     {
         return view('welcome');
@@ -37,9 +36,6 @@ class SpmController extends Controller
             'nomor_spm'      => 'required|string|max:50',
             'tanggal_spm'    => 'required|date',
             'nilai_spm'      => 'required|numeric',
-            'nomor_sp2d'     => 'nullable|string|max:50',
-            'tanggal_sp2d'   => 'nullable|date',
-            'nilai_sp2d'     => 'nullable|numeric',
             'tahun_anggaran' => 'required|digits:4',
             'kategori_id'    => 'required|exists:kategoris,id',
             'uraian'         => 'required|string',

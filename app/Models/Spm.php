@@ -6,5 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Spm extends Model
 {
-    //
+    protected $fillable = [
+        'nomor_spm',
+        'tanggal_spm',
+        'nilai_spm',
+        'tahun_anggaran',
+        'kategori_id',
+        'uraian',
+    ];
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
 }
