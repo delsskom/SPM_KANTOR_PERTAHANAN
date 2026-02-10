@@ -13,6 +13,7 @@ class Spm extends Model
         'tahun_anggaran',
         'kategori_id',
         'uraian',
+        'status_scan',
     ];
 
     public function kategori()

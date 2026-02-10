@@ -51,6 +51,7 @@ class SpmController extends Controller
             'tahun_anggaran' => 'required|digits:4',
             'kategori_id'    => 'required',
             'uraian'         => 'required',
+            'status_scan'     => 'required|in:belum,sudah',
         ]);
 
         Spm::create($request->all());

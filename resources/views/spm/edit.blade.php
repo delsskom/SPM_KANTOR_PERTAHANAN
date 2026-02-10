@@ -192,6 +192,12 @@
                 @endforeach
             </select>
 
+            <label>Status Scan</label>
+            <select name="status_scan">
+                <option value="sudah" {{ $spm->status_scan === 'sudah' ? 'selected' : '' }}>✔ Sudah Scan</option>
+                <option value="belum" {{ $spm->status_scan === 'belum' ? 'selected' : '' }}>✘ Belum Scan</option>
+            </select>
+
             <label>Uraian</label>
             <textarea name="uraian">{{ old('uraian', $spm->uraian) }}</textarea>
 

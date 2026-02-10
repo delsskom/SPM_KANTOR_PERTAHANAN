@@ -194,6 +194,18 @@
                    value="{{ old('tahun_anggaran', date('Y')) }}"
                    required>
             @error('tahun_anggaran') <small>{{ $message }}</small> @enderror
+            
+            <label>Status Scan</label>
+<select name="status_scan" required>
+    <option value="">-- Pilih Status Scan --</option>
+    <option value="belum" {{ old('status_scan') == 'belum' ? 'selected' : '' }}>
+        Belum Scan
+    </option>
+    <option value="sudah" {{ old('status_scan') == 'sudah' ? 'selected' : '' }}>
+        Sudah Scan
+    </option>
+</select>
+@error('status_scan') <small>{{ $message }}</small> @enderror
 
             <button type="submit"
                 onclick="this.disabled=true; this.form.submit();">

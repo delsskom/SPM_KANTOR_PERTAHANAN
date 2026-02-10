@@ -186,6 +186,19 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
+
+        /* 🔥 Badge Status Scan */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge-sudah { background: #2ecc71; color: #000; }
+        .badge-belum { background: #e74c3c; color: #fff; }
+
     </style>
 </head>
 <body>
@@ -228,6 +241,7 @@
                 <th>Tanggal</th>
                 <th>Nilai</th>
                 <th>Kategori</th>
+                <th>Status Scan</th>
                 <th>Uraian</th>
                 <th>Aksi</th>
             </tr>
@@ -238,11 +252,20 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $s->nomor_spm }}</td>
                     <td>{{ \Carbon\Carbon::parse($s->tanggal_spm)->format('d-m-Y') }}</td>
-                    <td class="nilai">
-                        Rp {{ number_format($s->nilai_spm, 0, ',', '.') }}
-                    </td>
+                    <td class="nilai">Rp {{ number_format($s->nilai_spm, 0, ',', '.') }}</td>
                     <td>{{ $s->kategori->nama_kategori ?? '-' }}</td>
+
+                    <!-- 🔥 STATUS SCAN -->
+                    <td>
+                        @if($s->status_scan === 'sudah')
+                            <span class="badge badge-sudah">✔ Sudah Scan</span>
+                        @else
+                            <span class="badge badge-belum">✘ Belum Scan</span>
+                        @endif
+                    </td>
+
                     <td>{{ $s->uraian }}</td>
+
                     <td class="aksi">
                         <a href="{{ route('spm.edit', $s->id) }}" class="edit">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -261,7 +284,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align:center; padding:30px;">
+                    <td colspan="8" style="text-align:center; padding:30px;">
                         Data SPM belum tersedia
                     </td>
                 </tr>
