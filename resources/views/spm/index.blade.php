@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Data SPM | Kantor Pertanahan Kota Kendari</title>
 
+    <!-- ICON -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         * {
             box-sizing: border-box;
@@ -149,6 +153,33 @@
             font-weight: bold;
             color: #f9ca24;
         }
+
+        /* AKSI */
+        .aksi a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .aksi .edit {
+            color: #00cec9;
+        }
+
+        .aksi .hapus {
+            color: #ff7675;
+        }
+
+        .alert {
+            background: #2ecc71;
+            color: #000;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -165,28 +196,38 @@
 
     <div class="header">
         <h2>Data SPM Kantor Pertanahan Kota Kendari</h2>
-        <a href="{{ route('spm.create') }}" class="btn-add">+ Tambah SPM</a>
+        <a href="{{ route('spm.create') }}" class="btn-add">
+            <i class="fa-solid fa-plus"></i> Tambah SPM
+        </a>
     </div>
 
+    @if(session('success'))
+        <div class="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form class="search-box" method="GET">
-        <input type="text" name="cari" placeholder="Cari Nomor SPM..." value="{{ request('cari') }}">
+        <input type="text" name="cari" placeholder="Cari Nomor SPM..."
+               value="{{ request('cari') }}">
         <button type="submit">Cari</button>
     </form>
 
     <div class="table-wrapper">
         <table>
             <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nomor SPM</th>
-                    <th>Tanggal</th>
-                    <th>Nilai</th>
-                    <th>Kategori</th>
-                    <th>Uraian</th>
-                </tr>
+            <tr>
+                <th>No</th>
+                <th>Nomor SPM</th>
+                <th>Tanggal</th>
+                <th>Nilai</th>
+                <th>Kategori</th>
+                <th>Uraian</th>
+                <th>Aksi</th>
+            </tr>
             </thead>
             <tbody>
-                @forelse($spms as $s)
+            @forelse($spms as $s)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $s->nomor_spm }}</td>
@@ -194,20 +235,24 @@
                     <td class="nilai">
                         Rp {{ number_format($s->nilai_spm, 0, ',', '.') }}
                     </td>
-                    <td>
-                        {{ $s->kategori->nama_kategori ?? '-' }}
-                    </td>
-                    <td>
-                        {{ $s->uraian }}
+                    <td>{{ $s->kategori->nama_kategori ?? '-' }}</td>
+                    <td>{{ $s->uraian }}</td>
+                    <td class="aksi">
+                        <a href="{{ route('spm.edit', $s->id) }}" class="edit">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </a>
+                        <a href="{{ route('spm.show', $s->id) }}" class="hapus">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </a>
                     </td>
                 </tr>
-                @empty
+            @empty
                 <tr>
-                    <td colspan="6" style="text-align:center; padding:30px;">
+                    <td colspan="7" style="text-align:center; padding:30px;">
                         Data SPM belum tersedia
                     </td>
                 </tr>
-                @endforelse
+            @endforelse
             </tbody>
         </table>
     </div>

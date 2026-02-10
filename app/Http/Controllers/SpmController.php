@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class SpmController extends Controller
 {
-    public function welcome()
-    {
-        return view('welcome');
-    }
-
     public function index(Request $request)
     {
         $spms = Spm::with('kategori')
@@ -32,18 +27,52 @@ class SpmController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nomor_spm'      => 'required|string|max:50',
+        $request->validate([
+            'nomor_spm'      => 'required',
             'tanggal_spm'    => 'required|date',
             'nilai_spm'      => 'required|numeric',
             'tahun_anggaran' => 'required|digits:4',
-            'kategori_id'    => 'required|exists:kategoris,id',
-            'uraian'         => 'required|string',
+            'kategori_id'    => 'required',
+            'uraian'         => 'required',
         ]);
 
-        Spm::create($validated);
+        Spm::create($request->all());
 
         return redirect()->route('spm.index')
-            ->with('success', 'Data SPM berhasil disimpan');
+            ->with('success', 'Data berhasil disimpan');
+    }
+
+    public function edit($id)
+    {
+        $spm = Spm::findOrFail($id);
+        $kategoris = Kategori::all();
+
+        return view('spm.edit', compact('spm', 'kategoris'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nomor_spm'      => 'required',
+            'tanggal_spm'    => 'required|date',
+            'nilai_spm'      => 'required|numeric',
+            'tahun_anggaran' => 'required|digits:4',
+            'kategori_id'    => 'required',
+            'uraian'         => 'required',
+        ]);
+
+        $spm = Spm::findOrFail($id);
+        $spm->update($request->all());
+
+        return redirect()->route('spm.index')
+            ->with('success', 'Data berhasil diupdate');
+    }
+
+    public function destroy($id)
+    {
+        Spm::findOrFail($id)->delete();
+
+        return redirect()->route('spm.index')
+            ->with('success', 'Data berhasil dihapus');
     }
 }

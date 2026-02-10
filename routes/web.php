@@ -3,19 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpmController;
 
+/*
+|--------------------------------------------------------------------------
+| ROUTE UMUM
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', [SpmController::class, 'welcome'])->name('home');
 
+Route::view('/welcome', 'welcome')->name('welcome');
+Route::view('/tentang', 'tentang')->name('tentang');
 
-Route::get('/welcome', [SpmController::class, 'welcome'])->name('welcome');
+/*
+|--------------------------------------------------------------------------
+| ROUTE SPM (CRUD LENGKAP)
+|--------------------------------------------------------------------------
+*/
 
-Route::view('/', 'welcome');
-Route::view('/tentang', 'tentang');
+Route::resource('spm', SpmController::class);
 
-Route::get('/tentang', function () {
-    return view('tentang');
-})->name('tentang');
+Route::resource('spm', SpmController::class)->except('show');
 
-
-Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
-Route::get('/spm/create', [SpmController::class, 'create'])->name('spm.create');
-Route::post('/spm/store', [SpmController::class, 'store'])->name('spm.store');
