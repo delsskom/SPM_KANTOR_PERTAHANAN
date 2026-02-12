@@ -48,14 +48,19 @@
             z-index: 10;
         }
 
-        .navbar h3 {
-            margin: 0;
-            font-size: 18px;
-        }
+       .logo {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.2;
+}
 
-        .navbar span {
-            color: #f9ca24;
-        }
+.logo span {
+    display: block;        /* bikin turun ke bawah */
+    font-size: 15px;       /* lebih kecil */
+    font-weight: normal;
+    color: #f9ca24;
+    margin-top: 2px;
+}
 
         main {
             padding: 140px 20px 40px;
@@ -129,8 +134,11 @@
 <body>
 
 <div class="navbar">
-    <h3>Sistem <span>SPM</span></h3>
-</div>
+   <h3 class="logo">
+    SIPAM
+    <span>Sistem Informasi Pembayaran dan Administrasi Membayar</span>
+</h3>
+
 
 <main>
     <div class="card">

@@ -48,14 +48,19 @@
             z-index: 10;
         }
 
-        .navbar h3 {
-            margin: 0;
-            font-size: 18px;
-        }
+       .logo {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.2;
+}
 
-        .navbar span {
-            color: #f9ca24;
-        }
+.logo span {
+    display: block;        /* bikin turun ke bawah */
+    font-size: 15px;       /* lebih kecil */
+    font-weight: normal;
+    color: #f9ca24;
+    margin-top: 2px;
+}
 
         .nav-menu {
             display: flex;
@@ -144,7 +149,12 @@
 <body>
 
 <div class="navbar">
-    <h3>Sistem <span>SPM</span></h3>
+   <h3 class="logo">
+    SIPAM
+    <span>Sistem Informasi Pembayaran dan Administrasi Membayar</span>
+</h3>
+
+
     <div class="nav-menu">
         <a href="{{ route('spm.index') }}">Data SPM</a>
         <a href="{{ route('tentang') }}">Tentang Sistem</a>
