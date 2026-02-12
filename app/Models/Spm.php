@@ -14,6 +14,7 @@ class Spm extends Model
         'kategori_id',
         'uraian',
         'status_scan',
+        'link_drive'
     ];
 
     public function kategori()

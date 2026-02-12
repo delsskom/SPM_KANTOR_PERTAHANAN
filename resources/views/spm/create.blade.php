@@ -2,8 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Input Data SPM | Kantor Pertanahan Kota Kendari</title>
+    <title>SIPAM</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
+
     <style>
         * {
             box-sizing: border-box;
@@ -86,6 +87,7 @@
             display: block;
             margin-top: 15px;
             font-size: 14px;
+            font-weight: 600;
         }
 
         input, select, textarea {
@@ -95,10 +97,37 @@
             border: none;
             margin-top: 6px;
             font-size: 14px;
+            outline: none;
         }
 
+        /* 🔥 TEXTAREA FIXED + SCROLL */
         textarea {
-            min-height: 90px;
+            height: 110px;
+            resize: none;
+            overflow-y: auto;
+        }
+
+        /* Scrollbar cantik */
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: #f9ca24;
+            border-radius: 10px;
+        }
+
+        /* KHUSUS LINK DRIVE */
+        .link-drive-box {
+            background: #f1f2f6;
+            color: #2d3436;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .link-drive-box:focus {
+            border: 2px solid #f9ca24;
+            box-shadow: 0 0 8px rgba(249,202,36,0.6);
         }
 
         small {
@@ -147,7 +176,6 @@
 
         <h2>Input Data SPM</h2>
 
-        {{-- ERROR GLOBAL --}}
         @if ($errors->any())
             <div class="error-box">
                 <ul>
@@ -163,15 +191,12 @@
 
             <label>Nomor SPM</label>
             <input type="text" name="nomor_spm" value="{{ old('nomor_spm') }}" required>
-            @error('nomor_spm') <small>{{ $message }}</small> @enderror
 
             <label>Tanggal SPM</label>
             <input type="date" name="tanggal_spm" value="{{ old('tanggal_spm') }}" required>
-            @error('tanggal_spm') <small>{{ $message }}</small> @enderror
 
             <label>Nilai SPM</label>
             <input type="number" name="nilai_spm" min="0" value="{{ old('nilai_spm') }}" required>
-            @error('nilai_spm') <small>{{ $message }}</small> @enderror
 
             <label>Kategori</label>
             <select name="kategori_id" required>
@@ -183,30 +208,32 @@
                     </option>
                 @endforeach
             </select>
-            @error('kategori_id') <small>{{ $message }}</small> @enderror
 
             <label>Uraian</label>
             <textarea name="uraian" required>{{ old('uraian') }}</textarea>
-            @error('uraian') <small>{{ $message }}</small> @enderror
 
             <label>Tahun Anggaran</label>
             <input type="number" name="tahun_anggaran"
-                   value="{{ old('tahun_anggaran', date('Y')) }}"
-                   required>
-            @error('tahun_anggaran') <small>{{ $message }}</small> @enderror
-            
-            <label>Status Scan</label>
-<select name="status_scan" required>
-    <option value="">-- Pilih Status Scan --</option>
-    <option value="belum" {{ old('status_scan') == 'belum' ? 'selected' : '' }}>
-        Belum Scan
-    </option>
-    <option value="sudah" {{ old('status_scan') == 'sudah' ? 'selected' : '' }}>
-        Sudah Scan
-    </option>
-</select>
-@error('status_scan') <small>{{ $message }}</small> @enderror
+                   value="{{ old('tahun_anggaran', date('Y')) }}" required>
 
+            <label>Status Scan</label>
+            <select name="status_scan" required>
+                <option value="">-- Pilih Status Scan --</option>
+                <option value="belum" {{ old('status_scan') == 'belum' ? 'selected' : '' }}>
+                    Belum Scan
+                </option>
+                <option value="sudah" {{ old('status_scan') == 'sudah' ? 'selected' : '' }}>
+                    Sudah Scan
+                </option>
+            </select>
+
+            <div class="form-group">
+    <label>Link Google Drive</label>
+    <input type="text" name="link_drive" class="form-control"
+           placeholder="Masukkan link drive">
+</div>
+
+            
             <button type="submit"
                 onclick="this.disabled=true; this.form.submit();">
                 Simpan Data SPM
@@ -216,6 +243,7 @@
                 onclick="window.location.href='{{ route('spm.index') }}'">
                 Kembali
             </button>
+
         </form>
 
     </div>

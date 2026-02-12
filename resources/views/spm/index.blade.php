@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data SPM | Kantor Pertanahan Kota Kendari</title>
+    <title>SIPAM</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
 
     <!-- ICON -->
@@ -188,7 +188,7 @@
         .aksi .hapus {
             color: #ff7675;
         }
-
+        
         .alert {
             background: #2ecc71;
             color: #000;
@@ -209,6 +209,21 @@
 
         .badge-sudah { background: #2ecc71; color: #000; }
         .badge-belum { background: #e74c3c; color: #fff; }
+         
+        .drive {
+    background: #27ae60;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+        
 
     </style>
 </head>
@@ -279,6 +294,7 @@
                 <th>Kategori</th>
                 <th>Status Scan</th>
                 <th>Uraian</th>
+                <th>Link Drive</th>
                 <th>Aksi</th>
             </tr>
             </thead>
@@ -291,7 +307,7 @@
                     <td class="nilai">Rp {{ number_format($s->nilai_spm, 0, ',', '.') }}</td>
                     <td>{{ $s->kategori->nama_kategori ?? '-' }}</td>
 
-                    <!-- 🔥 STATUS SCAN -->
+                    <!-- STATUS SCAN -->
                     <td>
                         @if($s->status_scan === 'sudah')
                             <span class="badge badge-sudah">✔ Sudah Scan</span>
@@ -300,7 +316,18 @@
                         @endif
                     </td>
 
-                    <td>{{ $s->uraian }}</td>
+                   <td>{{ $s->uraian }}</td>
+
+<td>
+    @if($s->link_drive)
+        <a href="{{ $s->link_drive }}" target="_blank" class="drive">
+            <i class="fa-brands fa-google-drive"></i> Drive
+        </a>
+    @else
+        <span style="color:#ccc;">Tidak ada</span>
+    @endif
+</td>
+
 
                     <td class="aksi">
                         <a href="{{ route('spm.edit', $s->id) }}" class="edit">

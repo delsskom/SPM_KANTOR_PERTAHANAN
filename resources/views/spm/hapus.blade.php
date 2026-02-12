@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Hapus Data SPM | Kantor Pertanahan Kota Kendari</title>
+    <title>SIPAM</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
     <!-- ICON -->
     <link rel="stylesheet"

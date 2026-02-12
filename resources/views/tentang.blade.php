@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Tentang Sistem | Sistem Informasi SPM</title>
+    <title>SIPAM</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
     <style>
         * {

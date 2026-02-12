@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Data SPM | Kantor Pertanahan Kota Kendari</title>
+    <title>SIPAM</title>
     <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
     <!-- ICON -->
     <link rel="stylesheet"
@@ -204,6 +204,12 @@
             <label>Tahun Anggaran</label>
             <input type="number" name="tahun_anggaran"
                    value="{{ old('tahun_anggaran', $spm->tahun_anggaran) }}">
+            
+                   <div class="form-group">
+    <label>Link Google Drive</label>
+    <input type="text" name="link_drive" class="form-control"
+           value="{{ $spm->link_drive }}">
+</div>
 
             <div class="btn-group">
                 <button type="submit" class="btn-save">
