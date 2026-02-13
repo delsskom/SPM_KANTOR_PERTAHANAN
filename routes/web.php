@@ -1,34 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SpmController;
 
-/*
-|--------------------------------------------------------------------------
-| ROUTE UMUM
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/', [SpmController::class, 'welcome'])->name('home');
-
-Route::view('/welcome', 'welcome')->name('welcome');
-Route::view('/tentang', 'tentang')->name('tentang');
-
-/*
-|--------------------------------------------------------------------------
-| ROUTE SPM (CRUD LENGKAP + TERLIHAT SEMUA)
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('spm')->name('spm.')->group(function () {
-
-    Route::get('/', [SpmController::class, 'index'])->name('index');
-    Route::get('/create', [SpmController::class, 'create'])->name('create');
-    Route::post('/', [SpmController::class, 'store'])->name('store');
-
-    Route::get('/{id}/edit', [SpmController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [SpmController::class, 'update'])->name('update');
-
-    Route::delete('/{id}', [SpmController::class, 'destroy'])->name('destroy');
-
+Route::get('/', function () {
+    return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
