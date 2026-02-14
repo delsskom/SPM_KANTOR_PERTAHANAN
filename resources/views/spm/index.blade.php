@@ -204,7 +204,7 @@
             font-weight: bold;
         }
 
-        /* 🔥 Badge Status Scan */
+        /* Badge Status Scan */
         .badge {
             padding: 6px 14px;
             border-radius: 20px;
@@ -229,7 +229,7 @@
     gap: 6px;
 }
 
-        /* 🔥 🔥 🔥 PAGINATION STYLE 🔥 🔥 🔥 */
+        /*  PAGINATION STYLE  */
         .pagination-wrapper {
             margin-top: 30px;
             background: rgba(255,255,255,0.15);
@@ -313,7 +313,7 @@
             }
         }
 
-        /* 🔥 Badge Role User */
+        /* Badge Role User */
         .user-info {
             display: flex;
             align-items: center;
@@ -341,7 +341,7 @@
         .role-admin { background: #2ecc71; color: #000; }
         .role-user { background: #3498db; color: #fff; }
 
-        /* 🔥 Logout Button */
+        /* Logout Button */
         .logout-btn {
             background: #e74c3c;
             color: white;
@@ -375,7 +375,7 @@
         <a href="{{ url('/') }}">Beranda</a>
         <a href="{{ route('tentang') }}">Tentang Sistem</a>
         
-        <!-- 🔥 Info User Login -->
+        <!-- Info User Login -->
         @if(auth()->check())
             <div class="user-info">
                 <span class="user-name">{{ auth()->user()->name }}</span>
@@ -404,7 +404,7 @@
     <div class="header">
         <h2>Data SPM Kantor Pertanahan Kota Kendari</h2>
         
-        <!-- 🔥 Tombol Tambah SPM hanya untuk Admin -->
+        <!-- Tombol Tambah SPM hanya untuk Admin -->
         @if(auth()->check() && auth()->user()->role === 'admin')
             <a href="{{ route('spm.create') }}" class="btn-add">
                 <i class="fa-solid fa-plus"></i> Tambah SPM
@@ -418,7 +418,7 @@
         </div>
     @endif
 
-    <!-- 🔥 FORM SEARCH + FILTER -->
+    <!-- FORM SEARCH + FILTER -->
     <form method="GET" action="{{ route('spm.index') }}" class="search-box">
 
         <input type="text" name="cari"
@@ -462,7 +462,7 @@
                 <th>Uraian</th>
                 <th>Link Drive</th>
                 
-                <!-- 🔥 Kolom Aksi hanya untuk Admin -->
+                <!-- Kolom Aksi hanya untuk Admin -->
                 @if(auth()->check() && auth()->user()->role === 'admin')
                     <th>Aksi</th>
                 @endif
@@ -499,7 +499,7 @@
 </td>
 
 
-                    <!-- 🔥 Kolom Aksi hanya untuk Admin -->
+                    <!-- Kolom Aksi hanya untuk Admin -->
                     @if(auth()->check() && auth()->user()->role === 'admin')
                     <td class="aksi">
                         <a href="{{ route('spm.edit', $s->id) }}" class="edit">
@@ -529,7 +529,7 @@
         </table>
     </div>
 
-    <!-- 🔥 🔥 🔥 PAGINATION 🔥 🔥 🔥 -->
+    <!-- PAGINATION -->
     @if($spms->hasPages())
     <div class="pagination-wrapper">
         <div class="pagination-info">
