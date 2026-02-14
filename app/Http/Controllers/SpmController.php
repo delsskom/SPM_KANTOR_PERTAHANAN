@@ -16,59 +16,55 @@ class SpmController extends Controller
         return view('welcome');
     }
 
-
     /**
-     * 🔹 Tampilkan data SPM
+     * 🔹 Tampilkan data SPM dengan Pagination
      * ✅ Semua user login boleh melihat
      * ❌ Tidak dibatasi admin
      */
     public function index(Request $request)
     {
-        // ambil data + relasi kategori
-        $spms = Spm::with('kategori')
+        // Query builder
+        $query = Spm::with('kategori');
 
-            // 🔍 FITUR PENCARIAN
-            ->when($request->cari, function ($query) use ($request) {
+        // 🔍 FITUR PENCARIAN
+        if ($request->cari) {
+            $cari = $request->cari;
+            $parts = preg_split('/[\/\s]+/', $cari);
 
-                $cari = $request->cari;
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if ($part === '') continue;
 
-                // pisah kata berdasarkan spasi / slash
-                $parts = preg_split('/[\/\s]+/', $cari);
+                $query->where(function ($q) use ($part) {
+                    $q->where('nomor_spm', 'like', "%{$part}%")
+                      ->orWhereHas('kategori', function ($q2) use ($part) {
+                          $q2->where('nama_kategori', 'like', "%{$part}%");
+                      })
+                      ->orWhere('tahun_anggaran', 'like', "%{$part}%");
+                });
+            }
+        }
 
-                foreach ($parts as $part) {
-                    $part = trim($part);
-                    if ($part === '') continue;
+        // 🔽 FILTER KATEGORI
+        if ($request->kategori) {
+            $query->where('kategori_id', $request->kategori);
+        }
 
-                    $query->where(function ($q) use ($part) {
-                        $q->where('nomor_spm', 'like', "%{$part}%")
-                          ->orWhereHas('kategori', function ($q2) use ($part) {
-                              $q2->where('nama_kategori', 'like', "%{$part}%");
-                          })
-                          ->orWhere('tahun_anggaran', 'like', "%{$part}%");
-                    });
-                }
-            })
+        // 🔽 FILTER TAHUN
+        if ($request->tahun) {
+            $query->where('tahun_anggaran', $request->tahun);
+        }
 
-            // 🔽 FILTER KATEGORI
-            ->when($request->kategori, function ($query) use ($request) {
-                $query->where('kategori_id', $request->kategori);
-            })
-
-            // 🔽 FILTER TAHUN
-            ->when($request->tahun, function ($query) use ($request) {
-                $query->where('tahun_anggaran', $request->tahun);
-            })
-
-            // urutkan terbaru
-            ->orderBy('tanggal_spm', 'desc')
-            ->get();
+        // 🔽 Urutkan dan paginate (10 data per halaman)
+        $spms = $query->orderBy('tanggal_spm', 'desc')
+                      ->paginate(10)
+                      ->appends($request->except('page')); // ✅ Simpan filter saat pindah halaman
 
         // ambil kategori untuk dropdown filter
         $kategoris = Kategori::all();
 
         return view('spm.index', compact('spms', 'kategoris'));
     }
-
 
     /**
      * 🔹 Form tambah SPM
@@ -85,7 +81,6 @@ class SpmController extends Controller
 
         return view('spm.create', compact('kategoris'));
     }
-
 
     /**
      * 🔹 Simpan data SPM
@@ -117,7 +112,6 @@ class SpmController extends Controller
             ->with('success', 'Data berhasil disimpan');
     }
 
-
     /**
      * 🔹 Detail SPM
      * ✅ Semua user boleh lihat
@@ -128,7 +122,6 @@ class SpmController extends Controller
 
         return view('spm.show', compact('spm'));
     }
-
 
     /**
      * 🔹 Form edit SPM
@@ -145,7 +138,6 @@ class SpmController extends Controller
 
         return view('spm.edit', compact('spm', 'kategoris'));
     }
-
 
     /**
      * 🔹 Update data SPM
@@ -174,7 +166,6 @@ class SpmController extends Controller
         return redirect()->route('spm.index')
             ->with('success', 'Data berhasil diupdate');
     }
-
 
     /**
      * 🔹 Hapus data SPM
