@@ -1,25 +1,178 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Lupa Password | SIPAM</title>
+    <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            background-image: url('{{ asset("images/atr.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+        .logo { margin: 0; font-size: 20px; line-height: 1.2; }
+        .logo span { display:block; font-size: 15px; font-weight: normal; color: #f9ca24; margin-top: 2px; }
+        .nav-menu { display: flex; gap: 25px; align-items: center; }
+        .nav-menu a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; }
+
+        main { padding: 130px 20px 40px; max-width: 1200px; margin: auto; }
+
+        .box {
+            max-width: 460px;
+            margin: auto;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+        h2 { margin: 0 0 8px; font-size: 22px; font-weight: 800; }
+        p { margin: 0 0 18px; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+
+        label { font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; margin-top: 14px; }
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: none;
+            background: #f9ca24;
+            color: #000;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { opacity: 0.95; }
+
+        .success-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(46, 204, 113, 0.18);
+            border: 1px solid rgba(46, 204, 113, 0.35);
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .error-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(231, 76, 60, 0.18);
+            border: 1px solid rgba(231, 76, 60, 0.35);
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .link {
+            display: inline-block;
+            margin-top: 16px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        .link:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h3 class="logo">
+        SIPAM
+        <span>Sistem Informasi Pembayaran dan Administrasi Membayar</span>
+    </h3>
+
+    <div class="nav-menu">
+        <a href="{{ route('home') }}">Beranda</a>
+        <a href="{{ route('tentang') }}">Tentang Sistem</a>
+        <a href="{{ route('login') }}">Login</a>
     </div>
+</div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<main>
+    <div class="box">
+        <h2>Lupa Password</h2>
+        <p>
+            Masukkan email akun kamu. Sistem akan mengirim link untuk reset password.
+        </p>
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+        @if (session('status'))
+            <div class="success-box">
+                {{ session('status') }}
+            </div>
+        @endif
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        @if ($errors->any())
+            <div class="error-box">
+                <b>Terjadi kesalahan:</b>
+                <ul style="margin: 6px 0 0 18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+
+            <label>Email</label>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email" required autofocus>
+
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-paper-plane"></i> KIRIM LINK RESET
+            </button>
+        </form>
+
+        <a class="link" href="{{ route('login') }}">
+            ← Kembali ke Login
+        </a>
+    </div>
+</main>
+
+</body>
+</html>

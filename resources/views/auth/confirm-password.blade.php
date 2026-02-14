@@ -1,27 +1,146 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Konfirmasi Password | SIPAM</title>
+    <link rel="icon" href="{{ asset('images/ATR2.jpg') }}" type="image/jpg">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            background-image: url('{{ asset("images/atr.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+        .logo { margin: 0; font-size: 20px; line-height: 1.2; }
+        .logo span { display:block; font-size: 15px; font-weight: normal; color: #f9ca24; margin-top: 2px; }
+        .nav-menu { display: flex; gap: 25px; align-items: center; }
+        .nav-menu a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; }
+
+        main { padding: 130px 20px 40px; max-width: 1200px; margin: auto; }
+
+        .box {
+            max-width: 460px;
+            margin: auto;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+        h2 { margin: 0 0 8px; font-size: 22px; font-weight: 800; }
+        p { margin: 0 0 18px; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+
+        label { font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; margin-top: 14px; }
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: none;
+            background: #f9ca24;
+            color: #000;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { opacity: 0.95; }
+
+        .error-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(231, 76, 60, 0.18);
+            border: 1px solid rgba(231, 76, 60, 0.35);
+            color: #fff;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h3 class="logo">
+        SIPAM
+        <span>Sistem Informasi Pembayaran dan Administrasi Membayar</span>
+    </h3>
+
+    <div class="nav-menu">
+        <a href="{{ route('home') }}">Beranda</a>
+        <a href="{{ route('tentang') }}">Tentang Sistem</a>
     </div>
+</div>
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
+<main>
+    <div class="box">
+        <h2>Konfirmasi Password</h2>
+        <p>
+            Ini untuk keamanan. Silakan masukkan password kamu sekali lagi.
+        </p>
 
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
+        @if ($errors->any())
+            <div class="error-box">
+                <b>Terjadi kesalahan:</b>
+                <ul style="margin: 6px 0 0 18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        <form method="POST" action="{{ route('password.confirm') }}">
+            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <label>Password</label>
+            <input type="password" name="password" required autocomplete="current-password">
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-shield-halved"></i> KONFIRMASI
+            </button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

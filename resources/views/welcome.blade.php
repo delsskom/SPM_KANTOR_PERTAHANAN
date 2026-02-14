@@ -236,16 +236,44 @@
 
 
     <div class="nav-menu">
-        <a href="{{ url('/') }}" 
-           class="{{ request()->is('/') ? 'active' : '' }}">
-            Beranda
+    <a href="{{ url('/') }}" 
+       class="{{ request()->is('/') ? 'active' : '' }}">
+        Beranda
+    </a>
+
+    <a href="{{ url('/tentang') }}" 
+       class="{{ request()->is('tentang') ? 'active' : '' }}">
+        Tentang Sistem
+    </a>
+
+    @guest
+        <a href="{{ route('login') }}"
+           class="{{ request()->is('login') ? 'active' : '' }}">
+            Login
         </a>
 
-        <a href="{{ url('/tentang') }}" 
-           class="{{ request()->is('tentang') ? 'active' : '' }}">
-            Tentang Sistem
+        <a href="{{ route('register') }}"
+           class="{{ request()->is('register') ? 'active' : '' }}">
+            Daftar
         </a>
-    </div>
+    @endguest
+
+    @auth
+        <a href="{{ route('spm.index') }}"
+           class="{{ request()->is('spm') ? 'active' : '' }}">
+            Data SPM
+        </a>
+
+        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+            @csrf
+            <button type="submit"
+                style="background:none;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;padding:0;">
+                Logout
+            </button>
+        </form>
+    @endauth
+</div>
+
 </div>
 
 
